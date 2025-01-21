@@ -29,6 +29,14 @@ Final weighted  F1-Score is **0.9010**.
 
 Trained model is available at: [Binary Discriminator](https://drive.google.com/file/d/1agzGYffdFl8yegjWbMtmw4NpCWDaZUOC/view?usp=drive_link)
 
+### Run and environments vars
+
+#### Environment vars
+```
+BINARY_DISCRIMINATOR_API_PORT=8001
+LOCAL_ADDRESS_AI_MODELS=/Path/to/downloaded/model
+```
+
 #### Run on Docker 
 ```bash
 docker-compose up --build binary_discriminator_service_api
