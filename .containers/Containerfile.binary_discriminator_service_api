@@ -1,0 +1,23 @@
+########################################################################################################################
+### BASE
+########################################################################################################################
+FROM python:3.11-slim-buster as base
+
+WORKDIR /app
+
+COPY ./lib/ ./projects/binary_discriminator_service_api/src/ ./projects/binary_discriminator_service_api/requirements.txt ./.containers/binary.discriminator.translation.api.sh /app/
+
+########################################################################################################################
+### BUILD
+########################################################################################################################
+FROM base as build
+
+RUN pip install --upgrade pip && \
+    pip install --requirement requirements.txt
+
+########################################################################################################################
+### APPLICATION ### PROD BUILD: docker build . --tag '<image-ref>:<image-tag>' --target application
+########################################################################################################################
+FROM build as application
+
+CMD ["bash", "binary.discriminator.translation.api.sh"]

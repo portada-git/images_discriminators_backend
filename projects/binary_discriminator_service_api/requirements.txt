@@ -1,0 +1,13 @@
+uvicorn==0.24.0
+fastapi==0.104.1
+prometheus-client==0.18.0
+python-jose
+passlib
+python-dotenv
+python-multipart
+bcrypt
+numpy
+pandas
+torch
+torchvision
+
