@@ -27,6 +27,8 @@ Using Adam as optimizer with 20 epochs and early-stoping
 
 Final weighted  F1-Score is **0.9010**.
 
+Trained model is available at: [Binary Discriminator](https://drive.google.com/file/d/1agzGYffdFl8yegjWbMtmw4NpCWDaZUOC/view?usp=drive_link)
+
 #### Run on Docker 
 ```bash
 docker-compose up --build binary_discriminator_service_api
