@@ -15,9 +15,12 @@ class ModelResNet:
         nr_filters = self.model.fc.in_features
         self.model.fc = nn.Linear(nr_filters, 1)
         self.model.load_state_dict(torch.load(self.localAddress, map_location=torch.device(self.device)))
+        self.model.eval()
 
     def predict(self, sample):
-        out = torch.sigmoid(self.model(sample))
+        with torch.no_grad():
+            out = torch.sigmoid(self.model(sample))
+
         if out <= 0.4:
             return "Legible", out
         else:

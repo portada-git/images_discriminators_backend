@@ -38,7 +38,7 @@ async def predict(file: Annotated[UploadFile,
                                               mean=[0.485, 0.456, 0.406],
                                               std=[0.229, 0.224, 0.225])])
 
-    image = Image.open(file.file)
+    image = Image.open(file.file).convert('RGB')
     img_tensor = test_transforms(image)
     img_tensor = torch.unsqueeze(img_tensor, dim=0).to(model.device)
     label, score = model.predict(img_tensor)
