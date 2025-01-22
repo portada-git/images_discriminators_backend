@@ -3,7 +3,7 @@ version: '3.9'
 services:
 
   binary_discriminator_service_api:
-    container_name: alexandrIA_translation_service_api
+    container_name: Portada_binary_discriminator_service_api
     volumes:
       - '$LOCAL_ADDRESS_AI_MODELS:/models/binary_discriminator'
     build:
@@ -18,7 +18,7 @@ services:
       - LOCAL_ADDRESS_AI_MODELS=/models/binary_discriminator
 
   binary_discriminator_service_api_local:
-    container_name: alexandrIA_translation_service_api
+    container_name: Portada_binary_discriminator_service_api
     volumes:
       - '$LOCAL_ADDRESS_AI_MODELS:/models/binary_discriminator'
     build:

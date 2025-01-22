@@ -17,11 +17,11 @@ class ModelResNet:
         self.model.load_state_dict(torch.load(self.localAddress, map_location=torch.device(self.device)))
         self.model.eval()
 
-    def predict(self, sample):
+    def predict(self, sample, threshold):
         with torch.no_grad():
             out = torch.sigmoid(self.model(sample))
 
-        if out <= 0.4:
+        if out <= threshold:
             return "Legible", out
         else:
             return "Non Legible", out

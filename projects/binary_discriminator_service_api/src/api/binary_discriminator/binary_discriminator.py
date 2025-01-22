@@ -21,16 +21,17 @@ class PredictionSchemaResponse(BaseModel):
 
 @router.post('/predict')
 async def predict(file: Annotated[UploadFile,
-                            File(description="A valid image")]):
+                            File(description="A valid image")], threshold: float = 0.4):
     """
    Predicts if an image is legible or not using a trained resnet model.
 
    Parameters:
        file (UploadFile): A valid image file uploaded by the user.
+       threshold: Float value that represents score's dirty to overcome for Non-Legible.
 
    Returns:
        PredictionSchemaResponse: A JSON object containing the predicted text and its score of dirty.
-       If dirty overcome 0.4 Non-legible is considered.
+       If dirty overcome threshold Non-legible is considered.
    """
     test_transforms = transforms.Compose([transforms.Resize((1024, 1024)),
                                           transforms.ToTensor(),
@@ -41,6 +42,6 @@ async def predict(file: Annotated[UploadFile,
     image = Image.open(file.file).convert('RGB')
     img_tensor = test_transforms(image)
     img_tensor = torch.unsqueeze(img_tensor, dim=0).to(model.device)
-    label, score = model.predict(img_tensor)
+    label, score = model.predict(img_tensor, threshold)
 
     return PredictionSchemaResponse(label=label, score=score)
