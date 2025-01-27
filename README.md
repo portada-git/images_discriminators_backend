@@ -39,7 +39,7 @@ LOCAL_ADDRESS_AI_MODELS=/Path/to/downloaded/model
 
 #### Run on Docker 
 ```bash
-docker-compose up --build binary_discriminator_service_api
+docker-compose up --build discriminators_service_api
 ```
 
 #### Run on Docker with prebuild local image

@@ -1,17 +1,17 @@
 ########################################################################################################################
 ### BASE
 ########################################################################################################################
-FROM projects-binary_discriminator_service_api as build
+FROM projects-discriminators_service_api as build
 
-COPY ./projects/binary_discriminator_service_api/src/ .
-COPY ./.containers/binary.discriminator.translation.api.sh .
+COPY ./projects/discriminators_service_api/src/ .
+COPY ./.containers/discriminator.service.api.sh .
 
 ########################################################################################################################
 ### APPLICATION ### PROD BUILD: docker build . --tag '<image-ref>:<image-tag>' --target application
 ########################################################################################################################
 FROM build as application
 
-CMD ["bash", "binary.discriminator.translation.api.sh"]
+CMD ["bash", "discriminator.service.api.sh"]
 ########################################################################################################################
 ### DEBUG ### DEBUG BUILD: docker build . --tag '<image-ref>:<image-tag>'
 ########################################################################################################################

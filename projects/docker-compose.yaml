@@ -2,34 +2,34 @@ version: '3.9'
 
 services:
 
-  binary_discriminator_service_api:
-    container_name: Portada_binary_discriminator_service_api
+  discriminators_service_api:
+    container_name: Portada_discriminators_service_api
     volumes:
       - '$LOCAL_ADDRESS_AI_MODELS:/models/discriminators_models'
     build:
       context: ../
-      dockerfile: .containers/Containerfile.binary_discriminator_service_api
+      dockerfile: .containers/Containerfile.discriminators_service_api
     ports:
-      - ${BINARY_DISCRIMINATOR_API_PORT}:${BINARY_DISCRIMINATOR_API_PORT}
+      - ${DISCRIMINATORS_API_PORT}:${DISCRIMINATORS_API_PORT}
     networks:
       - portada_net
     environment:
-      - BINARY_DISCRIMINATOR_API_PORT=${BINARY_DISCRIMINATOR_API_PORT}
+      - DISCRIMINATORS_API_PORT=${DISCRIMINATORS_API_PORT}
       - LOCAL_ADDRESS_AI_MODELS=/models/discriminators_models
 
-  binary_discriminator_service_api_local:
-    container_name: Portada_binary_discriminator_service_api
+  discriminators_service_api_local:
+    container_name: Portada_discriminators_service_api
     volumes:
       - '$LOCAL_ADDRESS_AI_MODELS:/models/discriminators_models'
     build:
       context: ../
-      dockerfile: .containers/Containerfile.binary_discriminator_service_api_local
+      dockerfile: .containers/Containerfile.discriminators_service_api_local
     ports:
-      - ${BINARY_DISCRIMINATOR_API_PORT}:${BINARY_DISCRIMINATOR_API_PORT}
+      - ${DISCRIMINATORS_API_PORT}:${DISCRIMINATORS_API_PORT}
     networks:
       - portada_net
     environment:
-      - BINARY_DISCRIMINATOR_API_PORT=${BINARY_DISCRIMINATOR_API_PORT}
+      - DISCRIMINATORS_API_PORT=${DISCRIMINATORS_API_PORT}
       - LOCAL_ADDRESS_AI_MODELS=/models/discriminators_models
 
 networks:

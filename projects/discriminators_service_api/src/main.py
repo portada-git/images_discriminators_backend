@@ -30,7 +30,7 @@ import logging
 
 # Service global variables
 apiEnv: dict[str, None] = {
-    "BINARY_DISCRIMINATOR_API_PORT": None,
+    "DISCRIMINATORS_API_PORT": None,
 }
 
 
@@ -53,7 +53,7 @@ def main():
         exit(1)
     # Configure and start the API service
     config = uvicorn.Config(
-        eAPI.app, host="0.0.0.0", port=int(apiEnv["BINARY_DISCRIMINATOR_API_PORT"]),
+        eAPI.app, host="0.0.0.0", port=int(apiEnv["DISCRIMINATORS_API_PORT"]),
         log_level=None)
     server = uvicorn.Server(config)
     server.run()

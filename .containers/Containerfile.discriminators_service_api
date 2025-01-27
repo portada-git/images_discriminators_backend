@@ -5,7 +5,7 @@ FROM python:3.11-slim-buster as base
 
 WORKDIR /app
 
-COPY ./projects/binary_discriminator_service_api/src/ ./projects/binary_discriminator_service_api/requirements.txt ./.containers/binary.discriminator.translation.api.sh /app/
+COPY ./projects/discriminators_service_api/src/ ./projects/discriminators_service_api/requirements.txt ./.containers/discriminator.service.api.sh /app/
 
 ########################################################################################################################
 ### BUILD
@@ -20,4 +20,4 @@ RUN pip install --upgrade pip && \
 ########################################################################################################################
 FROM build as application
 
-CMD ["bash", "binary.discriminator.translation.api.sh"]
+CMD ["bash", "discriminator.service.api.sh"]
