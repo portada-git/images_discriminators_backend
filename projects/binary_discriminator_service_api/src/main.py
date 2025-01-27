@@ -24,34 +24,32 @@
 
 import os
 import uvicorn
-import stk.simpleJSONLogger as jLogger
 import api.main as eAPI
+import logging
 
-# Genearl global variables
-jlog: jLogger.Logger = None
 
 # Service global variables
 apiEnv: dict[str, None] = {
     "BINARY_DISCRIMINATOR_API_PORT": None,
 }
 
-def hasEnvironmentVariables() -> bool:
+
+def has_environment_vars() -> bool:
     global apiEnv
     for key in apiEnv:
         apiEnv[key] = os.getenv(key)
         if apiEnv[key] is None:
-            jlog.error(
+            logging.error(
                 msg=f"environment variable '{key}' is not set",
                 extra={"service": "translation_service_api"})
             return False
     return True
 
 def main():
-    # Set json logger
-    global jlog, apiEnv
-    jlog=jLogger.Logger(logLevel=jLogger.LogLevel.DEBUG)
+    global apiEnv
+
     # check mandatory environment variables
-    if not hasEnvironmentVariables():
+    if not has_environment_vars():
         exit(1)
     # Configure and start the API service
     config = uvicorn.Config(

@@ -5,7 +5,7 @@ FROM python:3.11-slim-buster as base
 
 WORKDIR /app
 
-COPY ./lib/ ./projects/binary_discriminator_service_api/src/ ./projects/binary_discriminator_service_api/requirements.txt ./.containers/binary.discriminator.translation.api.sh /app/
+COPY ./projects/binary_discriminator_service_api/src/ ./projects/binary_discriminator_service_api/requirements.txt ./.containers/binary.discriminator.translation.api.sh /app/
 
 ########################################################################################################################
 ### BUILD
