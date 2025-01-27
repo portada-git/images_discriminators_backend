@@ -9,7 +9,7 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True
 class ModelResNet:
 
     def __init__(self):
-        self.localAddress = os.environ.get("LOCAL_ADDRESS_AI_MODELS", "")
+        self.localAddress = f"""{os.environ.get("LOCAL_ADDRESS_AI_MODELS", "")}/binary_discriminator.pth"""
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.model = models.resnet18(pretrained=False)  # pretrained=False is crucial here
         nr_filters = self.model.fc.in_features

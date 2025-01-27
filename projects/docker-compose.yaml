@@ -5,7 +5,7 @@ services:
   binary_discriminator_service_api:
     container_name: Portada_binary_discriminator_service_api
     volumes:
-      - '$LOCAL_ADDRESS_AI_MODELS:/models/binary_discriminator'
+      - '$LOCAL_ADDRESS_AI_MODELS:/models/discriminators_models'
     build:
       context: ../
       dockerfile: .containers/Containerfile.binary_discriminator_service_api
@@ -15,12 +15,12 @@ services:
       - portada_net
     environment:
       - BINARY_DISCRIMINATOR_API_PORT=${BINARY_DISCRIMINATOR_API_PORT}
-      - LOCAL_ADDRESS_AI_MODELS=/models/binary_discriminator
+      - LOCAL_ADDRESS_AI_MODELS=/models/discriminators_models
 
   binary_discriminator_service_api_local:
     container_name: Portada_binary_discriminator_service_api
     volumes:
-      - '$LOCAL_ADDRESS_AI_MODELS:/models/binary_discriminator'
+      - '$LOCAL_ADDRESS_AI_MODELS:/models/discriminators_models'
     build:
       context: ../
       dockerfile: .containers/Containerfile.binary_discriminator_service_api_local
@@ -30,7 +30,7 @@ services:
       - portada_net
     environment:
       - BINARY_DISCRIMINATOR_API_PORT=${BINARY_DISCRIMINATOR_API_PORT}
-      - LOCAL_ADDRESS_AI_MODELS=/models/binary_discriminator
+      - LOCAL_ADDRESS_AI_MODELS=/models/discriminators_models
 
 networks:
   portada_net:
