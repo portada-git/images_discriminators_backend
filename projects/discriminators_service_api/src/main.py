@@ -26,13 +26,16 @@ import os
 import uvicorn
 import api.main as eAPI
 import logging
-
+#import ssl
 
 # Service global variables
 apiEnv: dict[str, None] = {
     "DISCRIMINATORS_API_PORT": None,
 }
 
+
+#ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+#ssl_context.load_cert_chain('/path/to/cert.pem', keyfile='/path/to/key.pem')
 
 def has_environment_vars() -> bool:
     global apiEnv
@@ -54,7 +57,7 @@ def main():
     # Configure and start the API service
     config = uvicorn.Config(
         eAPI.app, host="0.0.0.0", port=int(apiEnv["DISCRIMINATORS_API_PORT"]),
-        log_level=None)
+        log_level=None) #ssl=ssl_context
     server = uvicorn.Server(config)
     server.run()
 

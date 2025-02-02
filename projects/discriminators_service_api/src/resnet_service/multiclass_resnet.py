@@ -43,4 +43,4 @@ class ModelMulticlassResNet:
             4: "TODO"
         }
 
-        return class_mapping[predicted_class], yhat.cpu().numpy()[0].tolist()
+        return class_mapping[predicted_class], predicted_class, yhat.cpu().numpy()[0].tolist()

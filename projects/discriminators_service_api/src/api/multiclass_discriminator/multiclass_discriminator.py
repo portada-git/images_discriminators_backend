@@ -17,6 +17,7 @@ model = ModelMulticlassResNet()
 
 class PredictionSchemaResponseMulticlass(BaseModel):
     label: str
+    discrete_label: int
     score: list[float]
     elapsed_time: float
 
@@ -53,9 +54,10 @@ async def predict(file: Annotated[UploadFile,
     image = Image.open(file.file).convert('RGB')
     img_tensor = test_transforms(image)
     img_tensor = torch.unsqueeze(img_tensor, dim=0).to(model.device)
-    label, score = model.predict(img_tensor)
+    label,discrete_label, score = model.predict(img_tensor)
     end_time = time.time()
 
     elapsed_time = end_time - start_time
 
-    return PredictionSchemaResponseMulticlass(label=label, score=score, elapsed_time=elapsed_time)
+    return PredictionSchemaResponseMulticlass(label=label, discrete_label=discrete_label, score=score,
+                                              elapsed_time=elapsed_time)
