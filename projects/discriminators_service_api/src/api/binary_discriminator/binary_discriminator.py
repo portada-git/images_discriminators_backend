@@ -11,6 +11,7 @@ import torchvision
 from torchvision import transforms
 import torch
 import time
+import os
 
 model = ModelResNet()
 
@@ -51,8 +52,9 @@ async def predict(file: Annotated[UploadFile,
     end_time = time.time()
 
     elapsed_time = end_time - start_time
-
+    # os.remove(file.filename)
     return PredictionSchemaResponse(label=label, score=score, elapsed_time=elapsed_time)
+
 
 @router.post('/predict/page')
 async def predict_page(file: Annotated[UploadFile,
@@ -84,5 +86,5 @@ async def predict_page(file: Annotated[UploadFile,
     end_time = time.time()
 
     elapsed_time = end_time - start_time
-
+    # os.remove(file.filename)
     return PredictionSchemaResponse(label=label, score=score, elapsed_time=elapsed_time)

@@ -4,36 +4,53 @@ from torchvision import datasets, models, transforms
 import torch.nn as nn
 from PIL import ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
+import numpy as np
 
-
-class ModelWithSoftmax(nn.Module):
+class ModelWithSigmoid(nn.Module):
     def __init__(self, model, labels):
-        super(ModelWithSoftmax, self).__init__()
+        super(ModelWithSigmoid, self).__init__()
         self.model = model
-        self.fc = nn.Linear(1000, labels)
-        self.softmax = nn.Softmax(dim=1)  # Apply softmax along the class dimension
+        self.sigmoid = nn.Sigmoid()  # Apply softmax along the class dimension
 
     def forward(self, x):
         x = self.model(x)
-        x=self.fc(x)
-        x = self.softmax(x)
+        x = self.sigmoid(x)
         return x
 
 
 class ModelMulticlassResNet:
 
     def __init__(self):
-        self.localAddress = f"""{os.environ.get("LOCAL_ADDRESS_AI_MODELS", "")}/model_weights_multiclass_classification.pth"""
+        self.localAddress = f"""{os.environ.get("LOCAL_ADDRESS_AI_MODELS", "")}/model_weights_model_sigmoid.pth"""
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        model_rest_net_pre = models.resnet18(pretrained=False)  # pretrained=False is crucial here
-        self.model = ModelWithSoftmax(model_rest_net_pre, 5)  #
+        model_rest_net_pre = models.resnet18(pretrained=True)
+        nr_filters = model_rest_net_pre.fc.in_features
+        model_rest_net_pre.fc = nn.Linear(nr_filters, 4)
+        self.model = ModelWithSigmoid(model_rest_net_pre, 4)  #
         self.model.load_state_dict(torch.load(self.localAddress, map_location=torch.device(self.device)))
         self.model.eval()
 
     def predict(self, sample):
+        thresholds = [0.2, 0.3, 0.15, 0.25]
+
         with torch.no_grad():
             yhat = self.model(sample)
-            predicted_class = torch.argmax(yhat, dim=1).cpu().numpy()[0]
+            predictions = yhat.cpu().numpy()
+
+            for i in range(predictions.shape[0]):
+                predicted_classes = []
+                for j in range(predictions.shape[1]):
+                    if predictions[i][j] > thresholds[j]:
+                        predicted_classes.append(j)
+                if len(predicted_classes) == 0:
+                    predicted_class = 2
+                elif len(predicted_classes) == 1:
+                    predicted_class = predicted_classes[0]
+                elif len(predicted_classes) > 1 and 2 not in predicted_classes:
+                    predicted_class = 4
+                else:
+                    max_index = np.argmax(predictions[i])
+                    predicted_class = max_index
 
         class_mapping = {
             0: "CURVATURA",
@@ -43,4 +60,9 @@ class ModelMulticlassResNet:
             4: "TODO"
         }
 
-        return class_mapping[predicted_class], predicted_class, yhat.cpu().numpy()[0].tolist()
+        if predicted_class == 4:
+            suggested_transformation = [class_mapping[i] for i in predicted_classes]
+        else:
+            suggested_transformation=[class_mapping[predicted_class]]
+
+        return class_mapping[predicted_class], predicted_class, yhat.cpu().numpy()[0].tolist(), suggested_transformation
