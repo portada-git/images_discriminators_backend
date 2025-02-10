@@ -21,6 +21,7 @@ class PredictionSchemaResponseMulticlass(BaseModel):
     discrete_label: int
     score: list[float]
     suggested_transformation: list[str]
+    suggested_transformation_indexes: list[int]
     elapsed_time: float
 
 
@@ -56,10 +57,12 @@ async def predict(file: Annotated[UploadFile,
     image = Image.open(file.file).convert('RGB')
     img_tensor = test_transforms(image)
     img_tensor = torch.unsqueeze(img_tensor, dim=0).to(model.device)
-    label,discrete_label, score, suggested_transformation = model.predict(img_tensor)
+    label, discrete_label, score, suggested_transformation, suggested_transformation_indexes = model.predict(img_tensor)
     end_time = time.time()
 
     elapsed_time = end_time - start_time
     # os.remove(os.getcwd()+"/"+file.filename)
     return PredictionSchemaResponseMulticlass(label=label, discrete_label=discrete_label, score=score,
-                                              elapsed_time=elapsed_time, suggested_transformation=suggested_transformation)
+                                              elapsed_time=elapsed_time,
+                                              suggested_transformation=suggested_transformation,
+                                              suggested_transformation_indexes=suggested_transformation_indexes)

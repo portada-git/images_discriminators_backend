@@ -60,9 +60,13 @@ class ModelMulticlassResNet:
             4: "TODO"
         }
 
+        suggested_transformation_indexes = []
         if predicted_class == 4:
             suggested_transformation = [class_mapping[i] for i in predicted_classes]
+            suggested_transformation_indexes = predicted_classes
         else:
-            suggested_transformation=[class_mapping[predicted_class]]
+            suggested_transformation = [class_mapping[predicted_class]]
+            suggested_transformation_indexes.append(predicted_class)
 
-        return class_mapping[predicted_class], predicted_class, yhat.cpu().numpy()[0].tolist(), suggested_transformation
+        return class_mapping[predicted_class], predicted_class, yhat.cpu().numpy()[0].tolist(), \
+            suggested_transformation, suggested_transformation_indexes
