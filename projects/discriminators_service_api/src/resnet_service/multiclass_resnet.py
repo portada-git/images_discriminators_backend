@@ -6,6 +6,7 @@ from PIL import ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 import numpy as np
 
+
 class ModelWithSigmoid(nn.Module):
     def __init__(self, model, labels):
         super(ModelWithSigmoid, self).__init__()
@@ -31,8 +32,8 @@ class ModelMulticlassResNet:
         self.model.load_state_dict(torch.load(self.localAddress, map_location=torch.device(self.device)))
         self.model.eval()
 
-    def predict(self, sample):
-        thresholds = [0.45, 0.25, 0.35, 0.55] # 0.2, 0.3, 0.15, 0.25 (old version)
+    def predict(self, sample):  # [0.45, 0.25, 0.35, 0.55] # 0.2, 0.3, 0.15, 0.25 (old version)
+        thresholds = [0.7602731599715904, 0.28838335905834345, 0.3224424159129208, 0.5297425940588911]
 
         with torch.no_grad():
             yhat = self.model(sample)
@@ -52,11 +53,7 @@ class ModelMulticlassResNet:
                 elif len(predicted_classes) > 1 and 2 not in predicted_classes:
                     predicted_classes_ponderations = np.array(predicted_classes_ponderations)
                     score = np.sum(predicted_classes_ponderations)
-                    if score > 1.35:  # 1.35
-                        predicted_class = 4
-                    else:
-                        max_index = np.argmax(predictions[i])
-                        predicted_class = max_index
+                    predicted_class = 4
                 else:
                     max_index = np.argmax(predictions[i])
                     predicted_class = max_index
